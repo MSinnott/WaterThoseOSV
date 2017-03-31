@@ -1,19 +1,11 @@
-#include "SoftwareSerial.h"
-#include "enes100.h"
-#include <dfr_tank.h>
+#ifndef DRIVE_H
+#define DRIVE_H
 
 #define SUCCEEDED  1
 #define FAILED 	   0
 #define PI         3.1415926
 
-#ifndef DRIVE_LOCK
-#define DRIVE_LOCK
-
-DFRTank tank;
-
-SoftwareSerial mySerial(8, 9);
-Marker mrk(99);
-RF_Comm rf(&mySerial, &mrk);
+#include "enes100.h"
 
 typedef struct Waypoint{
   float x, y;
@@ -34,4 +26,4 @@ float ang_to_turn(Marker loc, Waypoint wpt);
 
 float dist_to_waypt(Marker loc, Waypoint wpt);
 
-int drive(float port, float star);
+int drive(int port, int star);
