@@ -18,47 +18,17 @@ void init_drive(){
   pinMode(DIR_A, OUTPUT);    // Direction pin on channel A
   pinMode(BRAKE_B, OUTPUT);  // Brake pin on channel A
   pinMode(DIR_B, OUTPUT);
-  
 }
 
-int drive(){
-	Waypoint *pt;
-	while(pt->next != NULL){
-		//Code below used for sharp turns?? 
-		//float ang = ang_to_turn(mrk, wpt);
-		//turn_to_angle(ang);
-		
-		drive_to_waypt(*pt);
-		pt = pt->next;
-	}
+int drive_to_site(){
+
 }
 
-float d_thresh = 0.05;
-float base_pwr = 0.75;
-int drive_to_waypt(Waypoint pt){
-	while(dist_to_waypt(mrk, pt) < d_thresh){
-		float ang = ang_to_turn(mrk, pt);
-		float turn_pwr = rescale_angle(mrk.theta - ang);
-		drive(base_pwr + turn_pwr, base_pwr - turn_pwr);
-		rf.updateLocation();
-	}
-}
-
-
-
-float ang_to_turn(Marker loc, Waypoint wpt){
-	float ang = atan((loc.y - wpt.y) / (loc.x - wpt.x));
-	return ang;
-}
-
-float dist_to_waypt(Marker loc, Waypoint wpt){
-	return sqrt(((loc.y - wpt.y) * (loc.y - wpt.y))/ ((wpt.x - loc.x) * (wpt.x - loc.x)));
-}
 
 /******** Basic drive code below ********/
 
 float ang_thresh = 0.05;
-int turn_to_angle(float ang){
+int turn_to_ang(float ang){
         float err = 0;
         rf.updateLocation();
 	while(1){
@@ -77,9 +47,13 @@ int turn_to_angle(float ang){
 
 float rescale_angle(float ang){
         ang *= 500;
-        if(abs(ang) > 230){
-           ang = abs(ang)/ang * 230; 
+        
+        if(ang > 230){
+           ang = 230; 
+        } else if(ang < -230){
+           ang = -230; 
         }
+        
 	return ang;
 }
 

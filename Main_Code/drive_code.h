@@ -7,23 +7,14 @@
 
 #include "enes100.h"
 
-typedef struct Waypoint{
-  float x, y;
-  Waypoint *next; 
-} Waypoint;
-
 #endif
 
 void init_drive();
 
-int turn_to_angle(float ang);
-
-int drive_to_waypt(Waypoint pt);
+int turn_to_ang(float ang);
 
 float rescale_angle(float ang);
 
-float ang_to_turn(Marker loc, Waypoint wpt);
-
-float dist_to_waypt(Marker loc, Waypoint wpt);
-
 int drive(int port, int star);
+
+int drive_to_site();

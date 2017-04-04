@@ -13,5 +13,5 @@ void setup(){
 }
 
 void loop(){
-  drive();
+  turn_to_ang(PI/2);
 }
