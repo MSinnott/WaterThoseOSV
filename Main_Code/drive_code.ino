@@ -29,37 +29,50 @@ int drive_to_site(){
 
 float ang_thresh = 0.05;
 int turn_to_ang(float ang){
-        float err = 0;
-        rf.updateLocation();
-	while(1){
-		rf.updateLocation();
-		err += mrk.theta - ang;
-                float pwr = rescale_angle(mrk.theta - ang + err);
-                mySerial.print("Pwr:");
-                mySerial.println(pwr);
-		if(pwr > 0) {
-			drive((int) abs(pwr), 0);
-		} else {
-			drive(0, (int) abs(pwr));
-		}
-	}
+        float err = mrk.theta - ang;      
+        float turn_pwr = signum(err) * 220 + rescale_angle(err);
+        
+        cap(&turn_pwr, 250);
+	drive(turn_pwr, -turn_pwr);
+
+        char prnt[100];
+        sprintf(prnt, "Err: %f\n", err);
+        rf.println(prnt);
+
+	return abs(err) < ang_thresh;
+}
+
+static int signum(int f){
+  if(f > 0) return  1;
+  if(f < 0) return -1;
+  return 0;
 }
 
 float rescale_angle(float ang){
-        ang *= 500;
-        
-        if(ang > 230){
-           ang = 230; 
-        } else if(ang < -230){
-           ang = -230; 
-        }
-        
+        ang *= 200;
+
 	return ang;
+}
+
+void cap(float *val, float cap){
+  if(*val > cap){
+    *val = cap; 
+  } else if(*val < -cap){
+    *val = -cap; 
+  }
+}
+
+int drive(int port, int star){
+   drive_OSV(port, star); 
+}
+
+int drive(int pwr){
+   drive(pwr, pwr); 
 }
 
 /* Sets left motor to port and right motor to star 
    brakes if either = 0 */
-int drive(int port, int star){
+static int drive_OSV(int port, int star){
   if(port != 0) {
     digitalWrite(BRAKE_A, LOW);  // setting brake LOW disable motor brake
     digitalWrite(DIR_A, (port > 0) ? HIGH : LOW);   // setting direction - HIGH the motor will spin forward
@@ -68,10 +81,15 @@ int drive(int port, int star){
   }
   if(star != 0){
     digitalWrite(BRAKE_B, LOW);  // setting brake LOW disable motor brake
-    digitalWrite(DIR_B, (star > 0) ? HIGH : LOW);   // setting direction - HIGH the motor will spin forward
+    digitalWrite(DIR_B, (star > 0) ? HIGH : LOW);   // setting direction - LOW the motor will spin forward
   } else {
     digitalWrite(BRAKE_B, HIGH);  // setting brake HIGH enables motor brake 
   }
   analogWrite(PWM_A, abs(port));
   analogWrite(PWM_B, abs(star));
+}
+
+static int drive_tank(int port, int star){
+  tank.setLeftMotorPWM(port);
+  tank.setRightMotorPWM(star);
 }

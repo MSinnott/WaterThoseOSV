@@ -85,6 +85,10 @@ int getDist(){
   return cm;
 }
 
+float getDist_Tank(){
+   float val = analogRead(A4);
+   return 0.0016*(val*val)-1.8163*(val)+608.76;
+}
 
 long microsecondsToCentimeters(long microseconds) {
   // The speed of sound is 340 m/s or 29 microseconds per centimeter.

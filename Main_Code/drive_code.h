@@ -1,6 +1,8 @@
 #ifndef DRIVE_H
 #define DRIVE_H
 
+
+
 #define SUCCEEDED  1
 #define FAILED 	   0
 #define PI         3.1415926
@@ -16,5 +18,7 @@ int turn_to_ang(float ang);
 float rescale_angle(float ang);
 
 int drive(int port, int star);
+
+int drive(int pwr);
 
 int drive_to_site();
