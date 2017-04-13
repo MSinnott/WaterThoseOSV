@@ -6,7 +6,7 @@
 #include "enes100.h"
 #include <dfr_tank.h>
 
-SoftwareSerial mySerial(8, 9);
+SoftwareSerial mySerial(48, 50);
 Marker mrk(11);
 RF_Comm rf(&mySerial, &mrk);
 
@@ -16,14 +16,13 @@ void setup(){
     mySerial.begin(9600);
     rf.startMission();
     init_drive(); 
+    rf.println("Initialized!!");
 }
 
-int stage = 1, pwr = 130, dist_mark = 20;
+int stage = 1, pwr = 255, dist_mark = 20;
 void loop(){
-
   drive(255);
   return;
-  
   if (rf.updateLocation()){
         switch(stage){
 	    case 1:
@@ -32,7 +31,7 @@ void loop(){
 		break;
 	    case 2:
                 drive(pwr);
-		stage += (mrk.y >= 1.5);
+                stage += (mrk.y >= 1.5);
                 rf.println("Driving to y >= 1.5");
 		break;
 	    case 3:
@@ -45,7 +44,7 @@ void loop(){
                   rf.println("Seeing wall... skipping");                  
                   break; 
                 }
-		drive(pwr);
+                drive(pwr);
 		stage += (mrk.x >= 1.5);
                 rf.println("Driving to x >= 1.5");                 
                 break;
@@ -56,7 +55,7 @@ void loop(){
                 break;
             case 6:
                 drive(pwr);
-		stage += (mrk.y <= 0.5);
+                stage += (mrk.y <= 0.5);
                 rf.println("Driving to y <= 0.5");
 		break;
 	    case 7:
@@ -64,7 +63,7 @@ void loop(){
                 rf.println("Turning to 0");
 		break;
 	    case 8:
-		drive(pwr);
+                drive(pwr);
 		stage += (mrk.x >= 2.6);
                 rf.println("Driving to x >= 2.6");
                 break;

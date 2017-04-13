@@ -27,22 +27,28 @@ int drive_to_site(){
 
 /******** Basic drive code below ********/
 
-float ang_thresh = 0.05;
+float ang_thresh = 0.05, min_pwr = 255;
 int turn_to_ang(float ang){
         float err = mrk.theta - ang;      
-        float turn_pwr = signum(err) * 220 + rescale_angle(err);
+        float turn_pwr = signum(err) * min_pwr + rescale_angle(err);
         
         cap(&turn_pwr, 250);
 	drive(turn_pwr, -turn_pwr);
 
-        char prnt[100];
-        sprintf(prnt, "Err: %f\n", err);
-        rf.println(prnt);
+        rf.println(err);
 
-	return abs(err) < ang_thresh;
+	if(abs(err) < ang_thresh) return 1;
+        return 0;
 }
 
-static int signum(int f){
+/* FLOAT ABS! */
+static float abs(float f){
+  if(f > 0) return  f;
+  if(f < 0) return -f;
+  return 0;
+}
+
+static float signum(float f){
   if(f > 0) return  1;
   if(f < 0) return -1;
   return 0;
