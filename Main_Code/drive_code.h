@@ -20,5 +20,3 @@ float rescale_angle(float ang);
 int drive(int port, int star);
 
 int drive(int pwr);
-
-int drive_to_site();

@@ -19,12 +19,14 @@ void setup(){
     rf.println("Initialized!!");
 }
 
-int stage = 1, pwr = 255, dist_mark = 20;
+int stage = 1, pwr = 230, dist_mark = 20;
 void loop(){
-  drive(255);
-  return;
   if (rf.updateLocation()){
-        switch(stage){
+      char str[100] = {0};
+      sprintf(str, "X: %f\nY: %f\n", mrk.x, mrk.y);
+      rf.println(str);
+      rf.println("Ping?");
+      switch(stage){
 	    case 1:
                 stage += turn_to_ang(PI/2);
                 rf.println("Turning to PI/2");

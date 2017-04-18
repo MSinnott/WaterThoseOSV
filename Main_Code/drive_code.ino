@@ -20,14 +20,9 @@ void init_drive(){
   pinMode(DIR_B, OUTPUT);
 }
 
-int drive_to_site(){
-
-}
-
-
 /******** Basic drive code below ********/
 
-float ang_thresh = 0.05, min_pwr = 255;
+float ang_thresh = 0.05, min_pwr = 180;
 int turn_to_ang(float ang){
         float err = mrk.theta - ang;      
         float turn_pwr = signum(err) * min_pwr + rescale_angle(err);
@@ -41,25 +36,27 @@ int turn_to_ang(float ang){
         return 0;
 }
 
-/* FLOAT ABS! */
+/* float abs */
 static float abs(float f){
   if(f > 0) return  f;
   if(f < 0) return -f;
   return 0;
 }
 
+/* float signum */
 static float signum(float f){
   if(f > 0) return  1;
   if(f < 0) return -1;
   return 0;
 }
 
+/* rescales the error */
 float rescale_angle(float ang){
         ang *= 200;
-
 	return ang;
 }
 
+/* caps a value to a level */
 void cap(float *val, float cap){
   if(*val > cap){
     *val = cap; 
@@ -95,6 +92,7 @@ static int drive_OSV(int port, int star){
   analogWrite(PWM_B, abs(star));
 }
 
+/* testing __ONLY__ */
 static int drive_tank(int port, int star){
   tank.setLeftMotorPWM(port);
   tank.setRightMotorPWM(star);
