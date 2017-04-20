@@ -22,29 +22,30 @@ void init_drive(){
 
 /******** Basic drive code below ********/
 
-float ang_thresh = 0.05, min_pwr = 180;
+float ang_thresh = 0.05, min_pwr = 255;
 int turn_to_ang(float ang){
         float err = mrk.theta - ang;      
-        float turn_pwr = signum(err) * min_pwr + rescale_angle(err);
+        float turn_pwr = signum_flt(err)  * min_pwr;/* + rescale_angle(err);*/
         
-        cap(&turn_pwr, 250);
-	drive(turn_pwr, -turn_pwr);
+       /* cap(&turn_pwr, 250.0);*/
+	drive((int) turn_pwr, -(int) turn_pwr);
 
+        rf.print("Error: ");
         rf.println(err);
 
-	if(abs(err) < ang_thresh) return 1;
+	if(abs_flt(err) < ang_thresh) return 1;
         return 0;
 }
 
 /* float abs */
-static float abs(float f){
+static float abs_flt(float f){
   if(f > 0) return  f;
   if(f < 0) return -f;
   return 0;
 }
 
 /* float signum */
-static float signum(float f){
+static float signum_flt(float f){
   if(f > 0) return  1;
   if(f < 0) return -1;
   return 0;
@@ -94,6 +95,6 @@ static int drive_OSV(int port, int star){
 
 /* testing __ONLY__ */
 static int drive_tank(int port, int star){
-  tank.setLeftMotorPWM(port);
-  tank.setRightMotorPWM(star);
+ // tank.setLeftMotorPWM(port);
+ //s tank.setRightMotorPWM(star);
 }

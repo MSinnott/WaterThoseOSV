@@ -1,34 +1,37 @@
+#include "enes100.h"
+#include "marker.h"
+#include "rf_comm.h"
+
 #include "Arduino.h"
 #include "drive_code.h"
 #include "hardware.h"
 
 #include <SoftwareSerial.h>
-#include "enes100.h"
-#include <dfr_tank.h>
+//#include <dfr_tank.h>
 
-SoftwareSerial mySerial(48, 50);
+SoftwareSerial mySerial(6, 7);
 Marker mrk(11);
 RF_Comm rf(&mySerial, &mrk);
 
-DFRTank tank;
+//DFRTank tank;
 
 void setup(){
-    mySerial.begin(9600);
-    rf.startMission();
+    //mySerial.begin(9600);
     init_drive(); 
     rf.println("Initialized!!");
 }
 
 int stage = 1, pwr = 230, dist_mark = 20;
 void loop(){
-  if (rf.updateLocation()){
-      char str[100] = {0};
-      sprintf(str, "X: %f\nY: %f\n", mrk.x, mrk.y);
-      rf.println(str);
-      rf.println("Ping?");
+  int tst = rf.updateLocation();
+  if (tst == 1){
+      delay(300);
+      rf.println(tst);
+      delay(300);
+
       switch(stage){
 	    case 1:
-                stage += turn_to_ang(PI/2);
+                stage += turn_to_ang(3.14/2);
                 rf.println("Turning to PI/2");
 		break;
 	    case 2:
