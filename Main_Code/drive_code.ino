@@ -79,7 +79,7 @@ int drive(int pwr){
    drive(pwr, pwr); 
 }
 
-flaot scale = 25;
+float scale = 25;
 int maintain_heading(float heading){
   float p_pwr = 255 + scale * (mrk.theta - heading),
         s_pwr = 255 - scale * (mrk.theta - heading), 
