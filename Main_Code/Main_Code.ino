@@ -21,17 +21,17 @@ void setup(){
     rf.println("Initialized!!");
 }
 
-int stage = 1, pwr = 230, dist_mark = 20;
+int stage = 1, pwr = 230, dist_mark = 18;
 void loop(){
-  int tst = rf.updateLocation();
-  if (tst == 1){
+  int upd = rf.updateLocation();
+  if (upd == 1){
       delay(300);
-      rf.println(tst);
+      rf.println(upd);
       delay(300);
 
       switch(stage){
 	    case 1:
-                stage += turn_to_ang(3.14/2);
+                stage += turn_to_ang(PI/2);
                 rf.println("Turning to PI/2");
 		break;
 	    case 2:

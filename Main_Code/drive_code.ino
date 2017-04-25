@@ -51,6 +51,11 @@ static float signum_flt(float f){
   return 0;
 }
 
+static float max_flt(float a, float b){
+  if(a > b) return a;
+  return b; 
+}
+
 /* rescales the error */
 float rescale_angle(float ang){
         ang *= 200;
@@ -67,11 +72,23 @@ void cap(float *val, float cap){
 }
 
 int drive(int port, int star){
-   drive_OSV(port, star); 
+   drive_OSV(port, star); // Because apparently we can't build an OSV with two of the same motor 
 }
 
 int drive(int pwr){
    drive(pwr, pwr); 
+}
+
+flaot scale = 25;
+int maintain_heading(float heading){
+  float p_pwr = 255 + scale * (mrk.theta - heading),
+        s_pwr = 255 - scale * (mrk.theta - heading), 
+        max_pwr = max_flt(p_pwr, s_pwr);
+        
+  p_pwr *= 255.0 / max_pwr;
+  s_pwr *= 255.0 / max_pwr;
+  
+  drive(p_pwr, s_pwr);
 }
 
 /* Sets left motor to port and right motor to star 

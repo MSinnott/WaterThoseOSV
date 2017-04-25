@@ -20,3 +20,5 @@ float rescale_angle(float ang);
 int drive(int port, int star);
 
 int drive(int pwr);
+
+int maintain_heading(float heading);
