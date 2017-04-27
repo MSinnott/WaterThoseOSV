@@ -3,7 +3,7 @@
 int pingPin = 2;
 int servoPin = 5;
 int servoAngle = 0;
-int limitSwitch = 6;
+int limitSwitch = 10;
 int salinityPin = A0;
 
 int pump[] = {36, 37};
