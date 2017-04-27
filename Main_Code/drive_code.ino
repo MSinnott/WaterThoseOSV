@@ -95,6 +95,7 @@ int maintain_heading(float heading){
    brakes if either = 0 */
 static int drive_OSV(int port, int star){
   port *= -1; // Build team can't can't wire it right, so _I_ have to clean up _their_ messes. :P
+  star *= -1.0/3; // Build team can't can't wire it right, so _I_ have to clean up _their_ messes. :P
   if(port != 0) {
     digitalWrite(BRAKE_A, LOW);  // setting brake LOW disable motor brake
     digitalWrite(DIR_A, (port > 0) ? HIGH : LOW);   // setting direction - HIGH the motor will spin forward

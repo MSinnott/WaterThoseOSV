@@ -19,17 +19,12 @@ RF_Comm rf(&mySerial, &mrk);
 void setup(){
     Serial.begin(9600);
     init_drive(); 
-    init_sensors();
+  //  init_sensors();
     rf.println("Initialized!!");
 }
 
 int stage = 1, pwr = 230, dist_mark = 18;
 void loop(){
-  
-  Serial.println(measureDepth());
-  delay(1000);
-  
-  return;
   
   int upd = rf.updateLocation();
   if (upd == 1){
