@@ -23,8 +23,6 @@ void setup(){
 
 int stage = 1, pwr = 230, dist_mark = 18;
 void loop(){
-  drive(255);
-  return;
   int upd = rf.updateLocation();
   if (upd == 1){
       delay(300);
