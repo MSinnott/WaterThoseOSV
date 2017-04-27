@@ -34,11 +34,12 @@ void loop_prime() {
 int topOfWater = 0;
 int measureDepth(){
   int flag = 0;
-  int servoAngle = 0;
+  int servoAngle = 180;
   servo.write(servoAngle);
   
   while(digitalRead(limitSwitch)!=HIGH){
-    servoAngle = (servoAngle+1 % 180);
+    delay(50);
+    servoAngle = (servoAngle-1 % 180);
     servo.write(servoAngle);
     if(flag == 0 && analogRead(salinityPin)<1000){
       topOfWater = servoAngle;

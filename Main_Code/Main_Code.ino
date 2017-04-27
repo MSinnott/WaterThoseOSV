@@ -5,6 +5,7 @@
 #include "Arduino.h"
 #include "drive_code.h"
 #include "hardware.h"
+#include "ServoCodeWorking.h"
 
 #include <SoftwareSerial.h>
 //#include <dfr_tank.h>
@@ -16,13 +17,20 @@ RF_Comm rf(&mySerial, &mrk);
 //DFRTank tank;
 
 void setup(){
-    //mySerial.begin(9600);
+    Serial.begin(9600);
     init_drive(); 
+    init_sensors();
     rf.println("Initialized!!");
 }
 
 int stage = 1, pwr = 230, dist_mark = 18;
 void loop(){
+  
+  Serial.println(measureDepth());
+  delay(1000);
+  
+  return;
+  
   int upd = rf.updateLocation();
   if (upd == 1){
       delay(300);
