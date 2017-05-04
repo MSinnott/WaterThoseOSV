@@ -22,12 +22,12 @@ void init_drive(){
 
 /******** Basic drive code below ********/
 
-float ang_thresh = 0.05, min_pwr = 255;
+float ang_thresh = 0.1, min_pwr = 200;
 int turn_to_ang(float ang){
         float err = mrk.theta - ang;      
-        float turn_pwr = signum_flt(err)  * min_pwr;/* + rescale_angle(err);*/
+        float turn_pwr = signum_flt(err)  * min_pwr + rescale_angle(err);
         
-       /* cap(&turn_pwr, 250.0);*/
+        cap(&turn_pwr, 255.0);
 	drive((int) turn_pwr, -(int) turn_pwr);
 
         rf.print("Error: ");
@@ -76,14 +76,14 @@ int drive(int port, int star){
 }
 
 int drive(int pwr){
-   drive(pwr, pwr); 
+   drive(pwr, pwr * 5.0 / 7); 
 }
 
-float scale = 25;
+float scale = -400;
 int maintain_heading(float heading){
-  float p_pwr = 255 + scale * (mrk.theta - heading),
-        s_pwr = 255 - scale * (mrk.theta - heading), 
-        max_pwr = max_flt(p_pwr, s_pwr);
+  float p_pwr = 255 - scale * (mrk.theta - heading),
+        s_pwr = 255 + scale * (mrk.theta - heading); 
+  float max_pwr = max_flt(p_pwr, s_pwr);
         
   p_pwr *= 255.0 / max_pwr;
   s_pwr *= 255.0 / max_pwr;
@@ -94,8 +94,8 @@ int maintain_heading(float heading){
 /* Sets left motor to port and right motor to star 
    brakes if either = 0 */
 static int drive_OSV(int port, int star){
-  port *= -1; // Build team can't can't wire it right, so _I_ have to clean up _their_ messes. :P
-  star *= -1.0/3; // Build team can't can't wire it right, so _I_ have to clean up _their_ messes. :P
+  port *= -2.0/3.0; // Build team can't can't wire it right, so _I_ have to clean up _their_ messes. :P
+  star *= 1;
   if(port != 0) {
     digitalWrite(BRAKE_A, LOW);  // setting brake LOW disable motor brake
     digitalWrite(DIR_A, (port > 0) ? HIGH : LOW);   // setting direction - HIGH the motor will spin forward
