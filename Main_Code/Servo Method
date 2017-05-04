@@ -1,0 +1,30 @@
+int topOfWater = 0;
+double measureDepth(){
+  int flag = 0;
+  
+  int servoAngle = 0;
+  servo.write(servoAngle);
+  
+  while(digitalRead(limitSwitch)!=HIGH){
+    if(digitalRead(limitSwitch) == HIGH){
+      Serial.println("Bottom hit at theta = " + (String)servoAngle);
+      
+    }
+    servoAngle = ((servoAngle+1) % 180);
+    servo.write(servoAngle);
+    if(flag == 0 && analogRead(salinityPin)>20){
+      Serial.println("Water hit at theta = " + (String) servoAngle);
+        
+      topOfWater = servoAngle;
+      flag = 1;
+      
+    }
+    if(analogRead(salinityPin)>=50){
+      saltFlag = true;
+    }
+     delay(50);
+  }
+  
+  servo.write(0);
+  return((servoAngle-topOfWater)*(6.0*3.14159/360.0));          
+}
