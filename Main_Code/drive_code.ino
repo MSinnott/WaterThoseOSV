@@ -22,16 +22,13 @@ void init_drive(){
 
 /******** Basic drive code below ********/
 
-float ang_thresh = 0.1, min_pwr = 200;
+float ang_thresh = 0.1, min_pwr = 255;
 int turn_to_ang(float ang){
         float err = mrk.theta - ang;      
         float turn_pwr = signum_flt(err)  * min_pwr + rescale_angle(err);
         
         cap(&turn_pwr, 255.0);
 	drive((int) turn_pwr, -(int) turn_pwr);
-
-        rf.print("Error: ");
-        rf.println(err);
 
 	if(abs_flt(err) < ang_thresh) return 1;
         return 0;
@@ -58,7 +55,7 @@ static float max_flt(float a, float b){
 
 /* rescales the error */
 float rescale_angle(float ang){
-        ang *= 200;
+        ang *= 300;
 	return ang;
 }
 
@@ -94,7 +91,7 @@ int maintain_heading(float heading){
 /* Sets left motor to port and right motor to star 
    brakes if either = 0 */
 static int drive_OSV(int port, int star){
-  port *= -2.0/3.0; // Build team can't can't wire it right, so _I_ have to clean up _their_ messes. :P
+  port *= -1; // Build team can't can't wire it right, so _I_ have to clean up _their_ messes. :P
   star *= 1;
   if(port != 0) {
     digitalWrite(BRAKE_A, LOW);  // setting brake LOW disable motor brake

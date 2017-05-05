@@ -21,10 +21,9 @@ void setup(){
     init_drive(); 
     init_sensors();
     rf.println("Initialized!!");
-    resetServo();
 }
 
-int stage = 1, pwr = 200, dist_mark = 42;
+int stage = 1, pwr = 255, dist_mark = 42;
 void loop(){
   int upd = rf.updateLocation();
   if (upd == 1){
@@ -35,7 +34,7 @@ void loop(){
 		break;
 	    case 2:
                 maintain_heading(PI/2);
-                stage += (mrk.y >= 1.6);
+                stage += (mrk.y >= 1.65);
                 rf.println("Driving to y >= 1.6");
 		break;
 	    case 3:
@@ -50,7 +49,7 @@ void loop(){
                   break; 
                 }
                 maintain_heading(0);
-		stage += (mrk.x >= 1.35);
+		stage += (mrk.x >= 1.4);
                 rf.println("Driving to x >= 1.35");                 
                 break;
             // Go to bottom!!!
@@ -60,7 +59,7 @@ void loop(){
                 break;
             case 6:
                 maintain_heading(-PI/2);
-                stage += (mrk.y <= 0.37);
+                stage += (mrk.y <= 0.4);
                 rf.println("Driving to y <= 0.37");
 		break;
 	    case 7:
@@ -69,8 +68,8 @@ void loop(){
 		break;
 	    case 8:
                 maintain_heading(0);
-		stage += (mrk.x >= 2.33);
-                rf.println("Driving to x >= 2.33");
+		stage += (mrk.x >= 2.28);
+                rf.println("Driving to x >= 2.28");
                 break;
 	    case 9:
 		drive(0);
